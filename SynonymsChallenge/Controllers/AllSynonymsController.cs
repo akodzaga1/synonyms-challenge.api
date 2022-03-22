@@ -9,61 +9,61 @@ namespace SynonymsChallenge.Models
     {
         private string[] mySynonyms = new string[] { };
         string[][] allGroups = new Index().Dictionaries.SynonymDictionary.GetAllSynonymGroups();
-        
-        //// GET api/allsynonyms
-        //public string[] Get()
-        //{
-        //    return new string[] { "allsynonym1", "allsynonym2" };
-        //}
+        bool hasMore = false;
 
-        //// GET api/allsynonyms/{word}
-        //public string[] Get(string word)
-        //{
-        //    string[] allSynonyms = new string[] { };
-        //    mySynonyms = new string[] { };
-        //    //wantedWord = word;
-        //    allSynonyms = findSynonyms(word);
+        // POST api/allsynonyms
+        public SynonymsListAll Post([FromBody]PostParametersAll postObject)
+        {
+            hasMore = false;
+            string word = postObject.word;
+            string[][] myCollection = postObject.myCollection;
+            bool getAll = postObject.getAll;
+            int skip = postObject.skip;
+            string[] retrievedList = postObject.retrievedList.Length > 0 ? postObject.retrievedList : new string[] { word };
+            allGroups = allGroups.Concat(myCollection).ToArray();
+            string[] allSynonyms = retrievedList;
+            mySynonyms = retrievedList;
 
-        //    return allSynonyms.Where(x => x != word).ToArray();
-        //}
+            for (int i = skip; i < retrievedList.Length; i++)
+            {
+                allSynonyms = findSynonyms(retrievedList[i], getAll);
+            }
 
-        private string[] findSynonyms(string word)
+            SynonymsListAll retObj = new SynonymsListAll();
+            retObj.synonyms = allSynonyms.Where(x => x != word).ToArray();
+            retObj.hasMore = hasMore;
+
+            return retObj;
+        }
+
+        private string[] findSynonyms(string word, bool getAll)
         {
             string[][] result = allGroups.Where(x => x.Contains(word) && x.Any(y => !mySynonyms.Contains(y))).Select(x => x).ToArray();
             foreach (string[] s in result)
             {
                 string[] toAdd = s.Where(x => !mySynonyms.Contains(x)).ToArray();
                 mySynonyms = mySynonyms.Concat(toAdd).ToArray();
-                foreach(string element in s)
+                if (getAll == true)
                 {
-                    if(element != word)
-                        findSynonyms(element);
+                    foreach (string element in toAdd)
+                    {
+                        if (element != word)
+                            findSynonyms(element, getAll);
+                    }
                 }
+                else if (getAll == false && hasMore == false)
+                {
+                    foreach (string element in toAdd)
+                    {
+                        string[][] checkForMore = allGroups.Where(x => x.Contains(element) && x.Any(y => !mySynonyms.Contains(y))).Select(x => x).ToArray();
+                        if (checkForMore.Length > 0)
+                            hasMore = true;
+                    }
+
+                }
+
             }
             return mySynonyms;
         }
-        // POST api/allsynonyms
-        public string[] Post([FromBody]PostParameters postObject)
-        {
-            string word = postObject.word;
-            string[][] myCollection = postObject.myCollection;
-            allGroups = allGroups.Concat(myCollection).ToArray();
-            string[] allSynonyms = new string[] { };
-            mySynonyms = new string[] { };
-            
-            allSynonyms = findSynonyms(word);
-
-            return allSynonyms.Where(x => x != word).ToArray();
-        }
-
-        //// PUT api/allsynonyms/5
-        //public void Put(int id, [FromBody]string allsynonym)
-        //{
-        //}
-
-        //// DELETE api/allsynonyms/5
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

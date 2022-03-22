@@ -228,9 +228,11 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AllSynonymsController.cs" />
     <Compile Include="Controllers\MySynonymsController.cs" />
+    <Compile Include="Models\PostParametersAll.cs" />
+    <Compile Include="Models\SynonymsListAll.cs" />
+    <Compile Include="Models\SynonymsList.cs" />
     <Compile Include="Models\PostParameters.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
