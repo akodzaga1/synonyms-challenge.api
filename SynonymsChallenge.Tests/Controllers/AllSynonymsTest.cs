@@ -189,26 +189,6 @@ namespace SynonymsChallenge.Tests.Controllers
             Assert.IsTrue(result.synonyms.Contains("synonymD"));
             #endregion
 
-            #region show more level 2 "synonymA"
-            postParametersAll.word = "synonymA";
-            postParametersAll.skip = 1;
-            postParametersAll.retrievedList = new string[] { "synonymB", "synonymC" };
-            postParametersAll.getAll = false;
-            postParametersAll.myCollection = new string[][] { new string[] { "synonymA", "synonymB" }, new string[] { "synonymB", "synonymC" }, new string[] { "synonymC", "synonymD" }, new string[] { "synonymE", "synonymF" } };
-
-            // Act
-            result = controller.Post(postParametersAll);
-            expected = new SynonymsListAll();
-            expected.synonyms = new string[] { "synonymB", "synonymC", "synonymD" };
-            expected.hasMore = false;
-            // Assert
-            Assert.AreEqual(expected.hasMore, result.hasMore);
-            Assert.AreEqual(expected.synonyms.Length, result.synonyms.Length);
-            Assert.IsTrue(result.synonyms.Contains("synonymB"));
-            Assert.IsTrue(result.synonyms.Contains("synonymC"));
-            Assert.IsTrue(result.synonyms.Contains("synonymD"));
-            #endregion
-
             #region show more "synonymB"
             postParametersAll.word = "synonymB";
             postParametersAll.skip = 0;
