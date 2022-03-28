@@ -76,7 +76,7 @@ namespace SynonymsChallenge.Models
                         {
                             // If there is some more synonyms immediately return resulting array with that information
                             hasMore = true;
-                            return mySynonyms;
+                            break;
                         }
                     }
                 }
