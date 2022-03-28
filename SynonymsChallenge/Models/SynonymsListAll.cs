@@ -2,6 +2,6 @@
 {
     public class SynonymsListAll : SynonymsList
     {
-        public bool hasMore { get; set; }
+        public bool hasMore { get; set; } // Information: does word has more synonyms
     }
 }

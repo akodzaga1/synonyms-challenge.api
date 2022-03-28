@@ -2,6 +2,6 @@
 {
     public class SynonymsList
     {
-        public string[] synonyms { get; set; }
+        public string[] synonyms { get; set; } // List of synonym words
     }
 }
