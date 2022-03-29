@@ -16,8 +16,7 @@ namespace SynonymsChallenge
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{word}",
-                defaults: new { word = RouteParameter.Optional }
+                routeTemplate: "api/{controller}"
             );
         }
     }
